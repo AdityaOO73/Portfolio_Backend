@@ -6,3 +6,4 @@ router.post("/", sendMail);
 
 module.exports = router;
 
+

@@ -5,11 +5,8 @@ exports.sendMail = async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
 
   try {
-    // ✅ Save to MongoDB
-    const savedMessage = new Message({ name, email, phone, subject, message });
-    await savedMessage.save();
+    const savedMessage = await new Message({ name, email, phone, subject, message }).save();
 
-    // ✅ Send Email
     const transporter = nodemailer.createTransport({
       service: "Yahoo",
       auth: {
@@ -21,23 +18,23 @@ exports.sendMail = async (req, res) => {
     const mailOptions = {
       from: `"Portfolio Contact Form" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_TO,
-      subject: `Portfolio Contact Form: ${subject}`,
+      subject: `New message: ${subject}`,
       html: `
         <h3>New Message from Portfolio</h3>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
         <p><strong>Message:</strong><br/>${message}</p>
       `,
     };
 
     await transporter.sendMail(mailOptions);
 
-    res.status(200).json({ success: true, message: "Email sent and message stored!" });
-  } catch (error) {
-    console.error("Error:", error);
+    res.status(200).json({ success: true, message: "Message sent and saved!" });
+  } catch (err) {
+    console.error("🔥 Error:", err);
     res.status(500).json({ success: false, message: "Failed to send/store message." });
   }
 };
+
 

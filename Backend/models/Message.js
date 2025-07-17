@@ -6,8 +6,9 @@ const messageSchema = new mongoose.Schema({
   phone: String,
   subject: String,
   message: String,
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model("Message", messageSchema);
+
 
