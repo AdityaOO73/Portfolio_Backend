@@ -10,7 +10,7 @@ exports.sendMail = async (req, res) => {
     console.log(" Message saved");
 
     const transporter = nodemailer.createTransport({
-      service: "Yahoo",
+      service: "Gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
