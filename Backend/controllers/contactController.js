@@ -29,7 +29,7 @@ exports.sendMail = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Message sent and saved!" });
   } catch (err) {
-    console.error("🔥 Error:", err);
+    console.error(" Error:", err);
     res.status(500).json({ success: false, message: "Failed to send/store message." });
   }
 };
