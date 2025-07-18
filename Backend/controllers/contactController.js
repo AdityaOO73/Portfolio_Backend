@@ -3,9 +3,11 @@ const Message = require("../models/Message");
 
 exports.sendMail = async (req, res) => {
   const { name, email, phone, subject, message } = req.body;
+  console.log(" Request Body:", req.body);
 
   try {
     const savedMessage = await new Message({ name, email, phone, subject, message }).save();
+    console.log(" Message saved");
 
     const transporter = nodemailer.createTransport({
       service: "Yahoo",
@@ -19,16 +21,11 @@ exports.sendMail = async (req, res) => {
       from: `"Portfolio Contact Form" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_TO,
       subject: `New message: ${subject}`,
-      html: `
-        <h3>New Message from Portfolio</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Message:</strong><br/>${message}</p>
-      `,
+      html: `<p>Message: ${message}</p>`,
     };
 
     await transporter.sendMail(mailOptions);
+    console.log("Email sent");
 
     res.status(200).json({ success: true, message: "Message sent and saved!" });
   } catch (err) {
@@ -36,5 +33,6 @@ exports.sendMail = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to send/store message." });
   }
 };
+
 
 
